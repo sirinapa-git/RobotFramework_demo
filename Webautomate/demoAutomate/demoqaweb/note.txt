@@ -1,0 +1,100 @@
+# การทดสอบแบบ Functional, Regression, Smoke, และ Performance เป็นประเภทการทดสอบซอฟต์แวร์ที่มีความสำคัญต่างกัน ขึ้นอยู่กับลักษณะของการทดสอบที่ต้องการเน้นในแต่ละขั้นตอนของการพัฒนาซอฟต์แวร์ ต่อไปนี้คือคำอธิบายแต่ละประเภท:
+
+# 1. Functional Testing:
+# การทดสอบแบบ Functional คือการทดสอบฟังก์ชันการทำงานของโปรแกรมว่าเป็นไปตามข้อกำหนดที่ได้ออกแบบไว้หรือไม่ โดยไม่สนใจเรื่องรายละเอียดภายในซอฟต์แวร์ เช่น โค้ดและโครงสร้างภายใน
+
+# ตัวอย่าง:
+# ทดสอบว่าระบบการล็อกอินทำงานได้หรือไม่ โดยการป้อนชื่อผู้ใช้และรหัสผ่านที่ถูกต้อง และทดสอบว่าเข้าสู่ระบบสำเร็จหรือไม่
+# ทดสอบการชำระเงินผ่านระบบการชำระเงินออนไลน์
+# 2. Regression Testing:
+# การทดสอบแบบ Regression คือการทดสอบที่ทำขึ้นหลังจากที่มีการเปลี่ยนแปลงหรือปรับปรุงโค้ดเพื่อให้มั่นใจว่าโค้ดใหม่ไม่ได้ทำให้ฟังก์ชันที่มีอยู่แล้วเกิดการทำงานผิดพลาด (หรือทำให้ฟีเจอร์ที่เคยทำงานได้ก่อนหน้านี้หยุดทำงาน)
+
+# ตัวอย่าง:
+# หากมีการอัปเดตในฟีเจอร์การค้นหาของเว็บไซต์ การทดสอบแบบ Regression จะช่วยให้มั่นใจได้ว่าฟีเจอร์อื่นๆ เช่น การสมัครสมาชิก หรือการชำระเงิน ยังคงทำงานได้ดี
+# ทดสอบการทำงานของฟังก์ชันต่าง ๆ ที่อาจได้รับผลกระทบจากการแก้ไขโค้ด
+# 3. Smoke Testing:
+# การทดสอบแบบ Smoke คือการทดสอบเบื้องต้นที่ทำขึ้นเพื่อยืนยันว่าแอปพลิเคชันหรือระบบสามารถทำงานได้หรือไม่ก่อนที่จะทำการทดสอบเชิงลึกในส่วนอื่นๆ โดยการทดสอบนี้จะเน้นการตรวจสอบฟังก์ชันพื้นฐานว่าทำงานได้หรือไม่
+
+# ตัวอย่าง:
+# หลังจากติดตั้งโปรแกรมใหม่ การทดสอบ Smoke จะทำการตรวจสอบว่าโปรแกรมสามารถเปิดและทำงานได้หรือไม่
+# ทดสอบว่าระบบสามารถเข้าสู่หน้าแรกได้โดยไม่ล่ม
+# 4. Performance Testing:
+# การทดสอบแบบ Performance คือการทดสอบเพื่อประเมินประสิทธิภาพของระบบ เช่น ความเร็วในการทำงาน, ความสามารถในการรองรับการใช้งานจำนวนมาก (Load), และความทนทานของระบบในสถานการณ์ที่หนักหน่วง (Stress) โดยทดสอบการทำงานของระบบในสถานการณ์ที่มีการโหลดหนักหรือในช่วงเวลาที่มีการใช้งานมาก
+
+# ตัวอย่าง:
+# ทดสอบว่าเว็บไซต์สามารถรองรับผู้ใช้งานจำนวน 10,000 คนพร้อมกันได้หรือไม่
+# ทดสอบว่าแอปพลิเคชันมีความเร็วในการประมวลผลข้อมูลภายใน 2 วินาทีหรือไม่
+# สรุป:
+# Functional Testing: ทดสอบว่าแต่ละฟังก์ชันของระบบทำงานได้ตามที่คาดหวัง
+# Regression Testing: ทดสอบหลังการเปลี่ยนแปลงโค้ดเพื่อให้มั่นใจว่าไม่มีฟังก์ชันอื่นๆ เสียหาย
+# Smoke Testing: ทดสอบเบื้องต้นเพื่อให้มั่นใจว่าแอปพลิเคชันสามารถทำงานได้โดยไม่เกิดข้อผิดพลาดใหญ่
+# Performance Testing: ทดสอบความสามารถในการรองรับการใช้งานหนักและประสิทธิภาพของระบบ
+
+
+*** settings ***
+Library			SeleniumLibrary
+Library			RequestsLibrary
+Test Setup      Open Browser And Maximize ก่อนเริ่มรันทุกเทสเคส ระบบจะเรียกใช้คำสั่งนี้โดยอัตโนมัติ
+Test Teardown   Close Browser Window
+
+*** Variables ***
+${URL}        https://demoqa.com/broken
+${Browser}          Chrome
+${VALID_IMAGE}      xpath=//div[p[text()='Valid image']]/img[contains(@src, "/images/Toolsqa.jpg")] 
+${VERIFY_VALID_IMAGE}   xpath=//img[contains(@src, "/images/Toolsqa.jpg")]
+${INVALID_IMAGE}    xpath=//img[contains(@src, "/images/Toolsqa_1.jpg")] 
+${VALID_LINK}       xpath=//a[contains(@href,'http://demoqa.com')]
+${INVALID_LINK}     xpath=//a[contains(@href,'http://the-internet.herokuapp.com/status_codes/500')]
+
+*** Keywords *** เรียกใช้ใน settings
+Open Browser And Maximize
+    Open Browser  ${URL}  ${Browser}
+    Maximize Browser Window
+    Sleep  2s
+
+Close Browser Window
+    Close Browser
+    Log To Console  Test Completed
+
+*** Test cases ***
+tc-001 Verify image is valid for ToolsQA
+    [Documentation]     Valid Image
+    [Tags]      Functional
+
+    # Step 1: verify the page contains the given element
+    Page Should Contain Image   ${VALID_IMAGE}
+
+    # Step 2: verify that when go to image URL, it must have image there.Not empty page
+    ${img src1}=     Get element attribute   ${VALID_IMAGE}    attribute=src
+    Go To       ${img src1}
+    Page Should Contain Image   ${VERIFY_VALID_IMAGE} ใช้ ${VERIFY_VALID_IMAGE} เพราะมัน เช็คแค่มี <img> ที่ src ตรงกันโดยไม่สนใจตำแหน่งใน DOM
+
+tc-002 Verify image is invalid for ToolsQA
+    [Documentation]     Invalid Image
+    [Tags]      Functional
+
+    # Step 1: verify the page contains the given element
+    Page Should Contain Image   ${INVALID_IMAGE}
+
+    # Step 2: verify that the element is visible
+    Element Should Be Visible   ${INVALID_IMAGE}
+    
+    # Step 3: verify that when go to image URL, it must have image there.Not empty page
+    ${img src2}=     Get element attribute   ${INVALID_IMAGE}    attribute=src
+    Go To       ${img src2}
+    Page Should Not Contain Image   ${INVALID_IMAGE}
+
+tc-003 Verify the link is valid
+    [Documentation]     Valid link
+    [Tags]      Regression
+    ${link}=        Get Element attribute   ${VALID_LINK}   attribute=href
+    ${response}=    Get     ${link}     expected_status=200
+    Should be equal as integers     ${response.status_code}     200
+
+tc-004 Verify the link is invalid
+    [Documentation]     Invalid link
+    [Tags]      Regression
+    ${link}=        Get Element attribute   ${INVALID_LINK}     attribute=href
+    ${response}=    Get     ${link}     expected_status=500
+    Log to Console      ${response.status_code}
+    Should be equal as integers    ${response.status_code}       500 
