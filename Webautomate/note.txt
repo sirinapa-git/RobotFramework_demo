@@ -98,3 +98,9 @@ tc-004 Verify the link is invalid
     ${response}=    Get     ${link}     expected_status=500
     Log to Console      ${response.status_code}
     Should be equal as integers    ${response.status_code}       500 
+
+ตัวแปร	ใช้สำหรับ	ตัวอย่างการกำหนดค่า
+${}	ค่าตัวเดียว (String, Number)	${name} = John
+&{}	เก็บข้อมูลแบบ Dictionary (Key-Value)	&{user} = name=Alice, age=30
+${header} → ดึงค่าจาก JSON Object ใน resp.content
+เช็คว่า Response สำเร็จหรือไม่ Response Status should be Success    ${resp}
