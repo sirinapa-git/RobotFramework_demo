@@ -11,7 +11,7 @@ This repository is my **Robot Framework practice**, focusing on:
 - **API testing** with RequestsLibrary  
 - **Performance testing** with JMeter  
 - **Codeless testing** using Robot Framework commands  
-- **Python integration** for extended automation (Check `Scrape_LLM` for Python-based Robot Framework)  
+- **Python integration** for extended automation (Check `Scrape_LLM` for Python-Selenium Code)  
 
 ---
 
